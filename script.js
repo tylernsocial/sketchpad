@@ -62,7 +62,7 @@ function colChange(e) {
     const B = Math.floor(Math.random() * 255);
     e.target.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
   } else if (curBtn === "eraser") {
-    e.target.style.backgroundColor = "#f0f8ff";
+    e.target.style.backgroundColor = "#fff8dc";
   }
 }
 
@@ -90,7 +90,7 @@ function setup(scale) {
   for (let i = 0; i < resolution; i++) {
     const replacement = document.createElement("div");
     replacement.classList.add("replace-element");
-    replacement.style.backgroundColor = "#fff8dc"; // Set the background color to white
+    replacement.style.backgroundColor = "#fff8dc"; // Set the background color
     replacement.addEventListener("mouseover", colChange);
     replacement.addEventListener("mousedown", colChange);
     grid.appendChild(replacement);
