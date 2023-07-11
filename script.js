@@ -62,7 +62,7 @@ function colChange(e) {
     const B = Math.floor(Math.random() * 255);
     e.target.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
   } else if (curBtn === "eraser") {
-    e.target.style.backgroundColor = "#f0f8ff";
+    e.target.style.backgroundColor = "#fff8dc";
   }
 }
 
