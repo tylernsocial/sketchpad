@@ -67,19 +67,27 @@ function colChange(e) {
 }
 
 function activatedBtnListener(newBtn) {
-  if (curBtn === "colour") {
-    cBtn.classList.remove("active");
-  } else if (curBtn === "rainbow") {
-    rBtn.classList.remove("active");
-  } else if (curBtn === "eraser") {
-    eBtn.classList.remove("active");
+  switch (curBtn) {
+    case "colour":
+      cBtn.classList.remove("active");
+      break;
+    case "rainbow":
+      rBtn.classList.remove("active");
+      break;
+    case "eraser":
+      eBtn.classList.remove("active");
+      break;
   }
-  if (newBtn === "colour") {
-    cBtn.classList.add("active");
-  } else if (newBtn === "rainbow") {
-    rBtn.classList.add("active");
-  } else if (newBtn === "eraser") {
-    eBtn.classList.add("active");
+  switch (newBtn) {
+    case "colour":
+      cBtn.classList.add("active");
+      break;
+    case "rainbow":
+      rBtn.classList.add("active");
+      break;
+    case "eraser":
+      eBtn.classList.add("active");
+      break;
   }
 }
 
