@@ -131,3 +131,72 @@ function activatedBtnListener(newBtn) {
     - now this function updates the visual state of the buttons based on the currently selected drawing mode represented by curBtn, it adds or removes the active class
       in the css file to the highlight the active button.
 
+function setup(scale) {
+  grid.style.gridTemplateColumns = `repeat(${scale}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${scale}, 1fr)`;
+  let resolution = scale * scale;
+  for (let i = 0; i < resolution; i++) {
+    const replacement = document.createElement("div");
+    replacement.classList.add("replace-element");
+    replacement.style.backgroundColor = "#fff8dc"; // Set the background color
+    replacement.addEventListener("mouseover", colChange);
+    replacement.addEventListener("mousedown", colChange);
+    grid.appendChild(replacement);
+  }
+}
+
+    - in this function it is responsible for setting up the initial drawing grid based on the specified scale parameter, which represents the ratio of the scale ie: 16 x 16 
+      is the scale. To be clear setup takes a scale parameter which represents the desired size of the grid.
+    - now grid.style.gridTemplateColumns and grid.style.gridTemplateRows lines set the css styling for the grid element, they use the repeat() to specify the number of columns 
+      and rows in the grid based on the scale value, while the 1fr unit ensures that each column and row takes an equal fraction of available space in the grid
+    - while let resolution = scale * scale calculates the total number of grid cells needed for the specified scale value
+    - the for loop is used to create each grid cell, it iterates resolution times starting from = and incrementing by 1
+        - inside the loop a new div element is created using the document.add("replace-element") line which add these css styling class, replace-element" to the newly created grid cell, this call enables the grid cell to be styled 
+        - the replacement.style.backgroundColor = "#fff8dc" line sets the background colour of the grid cell the #fff8dc, which is the default and initial background colour for the grid cells
+        - then the two event listeners are added to the grid cell: replace.addEventListener("mouseover", colChange) and replace.addEventListener("mousedown", colChange), both these event listeners the colChange function, which is
+          when the mouse is moved over to the grid cell or when the mouse button is pressed on the grid cell, these listeners enable the user to draw on the grid by changing the cells background colour based on the current drawing feature
+        - lastly, the grid cell, replacement, is appended to the grid element using grid.appendChild(replacement) 
+    - overall, the setup function will dynamically create a grid by adding grid cells to the grid element based on the provided scale value, it sets up the necessary css styles 
+      and event listeners for each cell, allowing the user to interact with the grid and draw on it 
+
+function updateSize(scale) {
+  numSize.innerHTML = `${scale} x ${scale}`;
+}
+    - this function is responsible for updating the display of the grid size in the numSize element, it takes the scale parameter, representing the size of the grid, then 
+      sets the innerHTML property of numSize to a string that displays the current scale value by multiplying the scale value by itself. this function is called when the slide value changes,
+      displaying the updated grid size to the user
+
+function updateSetup() {
+  grid.innerHTML = "";
+  setup(curSize);
+}
+    - this function is used to update the setup of the grid based on the current size which is represented by curSize, it 
+      first clears the contents of the grid element by setting its innerHTML to an empth string, then it calls the setup function, 
+      passing the curSize value as the scale parameter, this then ensures that the grid is reinitialized with the updated size, 
+      updateSetup gets invoked when the clear button, clBtn, is clicked, which allows the user to reset the grid and start 
+      drawing from a blank canvas 
+
+function deploySize(scale) {
+  setCurSize(scale);
+  updateSize(scale);
+  updateSetup();
+}
+    - the deploySize function is used to deploy and apply a new grid size to the webpage, it takes the scale parameter, representing 
+      the new grid size and then performs the following:
+        - calls the setCurSize function passing the scale value to update the curSize variable which stores the current grid size
+        - then calls the updateSize function, passing the scale value to update the display of the grid size in the numSize element
+        - lastly it calls the updateSetup function to update the setup of the grid based on the new size
+    - this deploySize function is invokedwhen the slider value changes, ensuring that the new grid size is deployed and displayed in the webpage
+
+window.onload = function () {
+  setup(16);
+  activatedBtnListener("colour");
+};
+
+    - the window.onload is an event handler used to execute code when the web page has finished loading, in this case an anonymous function 
+      is assigned to window.onload, where inside the function the initial setup of the project is performed by calling the setup function with
+      an inital grid size of 16, this sets up the grid and its initial apperance, then activatedBtnListener is called with the argument colour, 
+      this ensures that the colour, cBtn, is initially set as the active button 
+    - overall, these lines contribute to the overall functionality of the webpage by updating and deploying the grid size, updating the display 
+      of the grid size, and setting up the initial state of the project when the page finishes loading, the functions updateSize, updateSetup, deploySize 
+      and the windown.onload event handler work together to ensure the projects behaviour and apperance are properly maintained and updated.  
