@@ -1,0 +1,133 @@
+this doc serves as a personal documentation file about the js code and notepad for different thoughs and ideas about the js code.
+
+const picked = document.getElementById("pickCol");
+    - this line retrives the element with the ID: pickCol in the HTML doc and assigns it to the varaible picked which represents
+      the input field colour where the user can pick a desired colour from the colour wheel or put in specific RGB code
+
+const cBtn = document.getElementById("colour");
+const rBtn = document.getElementById("rainbow");
+const eBtn = document.getElementById("erase");
+const clBtn = document.getElementById("clear");
+    - these lines retrives buttons with the specified IDS in the argument section of each getElementById method and then assign 
+      to corresponding variables such as cbtn cBtn, rBtn, eBtn, and clBtn, these buttons are used to select the different drawing features
+      such as the colour, rainbow, erase and clear features
+
+const slider = document.getElementById("slider");
+const numSize = document.getElementById("size-value");
+const grid = document.getElementById("grid");
+    - these lines retrieve the elements with specific IDs from the Html doc and then assign them to the corresponding variables; slider, numSize
+      , and grid. where slider represent an input range slider for adjusting the size of the grid, numSize represents a text element to display 
+      the current grid size and grid represents the container element where the drawing grid is displayed
+
+let curCol = "#95a984";
+let curBtn = "colour";
+let curSize = 16;
+    - these lines act as the defaul colour, button and size of the colour picker, drawing feature and size of the grid
+
+let mouseHold = false;
+document.body.onmousedown = () => (mouseHold = true);
+document.body.onmouseup = () => (mouseHold = false);
+    - now these lines handle the mouse events for clicking then holding and relasing the mouse buttonm, mouseHold is a flag variable that indicates 
+      whether the mouse button is currently being held down or not, when the mouse button is being pressed aka the onmousedown event then mouseHold 
+      is set to true, and whent he mouse button is released aka the onmouseup event mouseHold is set the false
+
+picked.addEventListener("input", function (e) {
+  curCol = e.target.value;
+});
+    - these lines adds an event listener to the colour input field picked, such that when the value of the colour input field changes the function is 
+      executed and retrieves the new colour value from the even e.target.value and assigns it to the curCol variable which represents the currently 
+      selected colour 
+
+cBtn.onclick = function () {
+  setCurBtn("colour");
+};
+rBtn.onclick = function () {
+  setCurBtn("rainbow");
+};
+eBtn.onclick = function () {
+  setCurBtn("eraser");
+};
+clBtn.onclick = function () {
+  updateSetup();
+};
+    - these lines assign click event handlers to the colour, rainbow, eraser, and clear buttons. When a button is clicked, it invokes a corresponding 
+      function. clicking the colour button calls the setCurBtn function with the argument "colour", which sets the current drawing mode to "colour". 
+      similarly, clicking the rainbow button sets the drawing mode to "rainbow", clicking the eraser button sets it to "eraser", and clicking the 
+      clear button calls the updateSetup function
+
+slider.onmousemove = function (e) {
+  updateSize(e.target.value);
+};
+slider.onchange = function (e) {
+  deploySize(e.target.value);
+};
+    - these lines assign event handlers to the slider element, when the slider value is changed by moving the slider to the left or right then releasing 
+      the corresponding function is executed, the updateSize function is called with the new value to update the display of the grid size and the deploySize
+      function is called with the new value to update the grid size and redraw the grid 
+
+function setCurBtn(nextBtn) {
+  activatedBtnListener(nextBtn);
+  curBtn = nextBtn;
+}
+    - this function sets the current drawing feature, curBtn, to the specified value nextBtn, it also calls the activatedBtnListener function to update the visual 
+      state of the buttons, highling the currently active button.
+        - for example: refer to this code cBtn.onclick = function () {
+                                            setCurBtn("colour");
+                                         };
+        in thise case, when the colour button, cBtn is clicked the setCurBtn function is invoked and the argument colour is passed as the nextBtn parameter, on 
+        the other hand it is similar to the other buttons, rbtn, eBtn, clBtn which have similar event handles that invoke the setCurbtn function with different 
+        arguments. and when this is called it also calls the mentioned activatedBtnListener which will determine which feature btn was pressed and highlight that 
+        btn on the webpage
+
+function setCurSize(nextSize) {
+  curSize = nextSize;
+}
+    - this function sets the current grid size, curSize, to the specified value, nextSize 
+    
+function colChange(e) {
+  if (e.type === "mouseover" && !mouseHold) {
+    return;
+  }
+  if (curBtn === "colour") {
+    e.target.style.backgroundColor = curCol;
+  } else if (curBtn === "rainbow") {
+    const R = Math.floor(Math.random() * 255);
+    const G = Math.floor(Math.random() * 255);
+    const B = Math.floor(Math.random() * 255);
+    e.target.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
+  } else if (curBtn === "eraser") {
+    e.target.style.backgroundColor = "#fff8dc";
+  }
+}
+    - this function is called when the mouse is moved over or clicked on a grid cell, it handles the colour change logic based on the fact of which curret feature 
+      is at hand represented by curBtn, if the mode is colour, it sets the background colour of the grid cell to the current colour, curCol, of the mode is rainbow,
+      then it generates a random RGB colour value which is then applied to the background of the grid cell, if the mode is in eraser then it sets the background colour
+      of the grid to the accent colour of #fff8dc 
+
+function activatedBtnListener(newBtn) {
+  switch (curBtn) {
+    case "colour":
+      cBtn.classList.remove("active");
+      break;
+    case "rainbow":
+      rBtn.classList.remove("active");
+      break;
+    case "eraser":
+      eBtn.classList.remove("active");
+      break;
+  }
+  switch (newBtn) {
+    case "colour":
+      cBtn.classList.add("active");
+      break;
+    case "rainbow":
+      rBtn.classList.add("active");
+      break;
+    case "eraser":
+      eBtn.classList.add("active");
+      break;
+  }
+}
+    - now this function updates the visual state of the buttons based on the currently selected drawing mode represented by curBtn, it adds or removes the active class
+      in the css file to the highlight the active button.
+
