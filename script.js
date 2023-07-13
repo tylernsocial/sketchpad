@@ -123,3 +123,4 @@ window.onload = function () {
   setup(16);
   activatedBtnListener("colour");
 };
+
