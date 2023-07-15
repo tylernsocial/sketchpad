@@ -3,6 +3,7 @@ const picked = document.getElementById("pickCol");
 const cBtn = document.getElementById("colour");
 const rBtn = document.getElementById("rainbow");
 const eBtn = document.getElementById("erase");
+const sBtn = document.getElementById("shading")
 const clBtn = document.getElementById("clear");
 
 const slider = document.getElementById("slider");
@@ -31,6 +32,9 @@ rBtn.onclick = function () {
 eBtn.onclick = function () {
   setCurBtn("eraser");
 };
+sBtn.onclick = function (){
+  setCurBtn("shading");
+}
 clBtn.onclick = function () {
   updateSetup();
 };
@@ -54,17 +58,45 @@ function colChange(e) {
   if (e.type === "mouseover" && !mouseHold) {
     return;
   }
+
+  const cell = e.target;
+  const currentColor = cell.style.backgroundColor;
+  let r, g, b;
+
   if (curBtn === "colour") {
-    e.target.style.backgroundColor = curCol;
+    cell.style.backgroundColor = curCol;
   } else if (curBtn === "rainbow") {
     const R = Math.floor(Math.random() * 255);
     const G = Math.floor(Math.random() * 255);
     const B = Math.floor(Math.random() * 255);
-    e.target.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
+    cell.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
   } else if (curBtn === "eraser") {
-    e.target.style.backgroundColor = "#fff8dc";
+    cell.style.backgroundColor = "#fff8dc";
+  } else if (curBtn === "shading") {
+    if (currentColor === "rgb(255, 255, 255)") {
+      // If the cell is white, start shading with the current color
+      cell.style.backgroundColor = curCol;
+    } else {
+      // Calculate shading by darkening the current color
+      const shadingFactor = 0.1; // Amount to darken the color on each shading
+
+      r = parseInt(currentColor.slice(4, -1).split(",")[0].trim());
+      g = parseInt(currentColor.slice(4, -1).split(",")[1].trim());
+      b = parseInt(currentColor.slice(4, -1).split(",")[2].trim());
+
+      r = Math.max(r - shadingFactor * 255, 0);
+      g = Math.max(g - shadingFactor * 255, 0);
+      b = Math.max(b - shadingFactor * 255, 0);
+
+      cell.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
   }
 }
+
+
+
+
+
 
 function activatedBtnListener(newBtn) {
   switch (curBtn) {
@@ -77,6 +109,9 @@ function activatedBtnListener(newBtn) {
     case "eraser":
       eBtn.classList.remove("active");
       break;
+    case "shading":
+      sBtn.classList.remove("active");
+      break;
   }
   switch (newBtn) {
     case "colour":
@@ -87,6 +122,9 @@ function activatedBtnListener(newBtn) {
       break;
     case "eraser":
       eBtn.classList.add("active");
+      break;
+    case "shading":
+      sBtn.classList.add("active");
       break;
   }
 }
