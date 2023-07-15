@@ -84,25 +84,48 @@ function setCurSize(nextSize) {
 }
     - this function sets the current grid size, curSize, to the specified value, nextSize 
     
-function colChange(e) {
+ function colChange(e) {
   if (e.type === "mouseover" && !mouseHold) {
     return;
   }
+
+  const cell = e.target;
+  const currentColor = cell.style.backgroundColor;
+  let r, g, b;
+
   if (curBtn === "colour") {
-    e.target.style.backgroundColor = curCol;
+    cell.style.backgroundColor = curCol;
   } else if (curBtn === "rainbow") {
     const R = Math.floor(Math.random() * 255);
     const G = Math.floor(Math.random() * 255);
     const B = Math.floor(Math.random() * 255);
-    e.target.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
+    cell.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
   } else if (curBtn === "eraser") {
-    e.target.style.backgroundColor = "#fff8dc";
+    cell.style.backgroundColor = "#fff8dc";
+  } else if (curBtn === "shading") {
+    if (currentColor === "rgb(255, 255, 255)") {
+      // If the cell is white, start shading with the current color
+      cell.style.backgroundColor = curCol;
+    } else {
+      // Calculate shading by darkening the current color
+      const shadingFactor = 0.1; // Amount to darken the color on each shading
+
+      r = parseInt(currentColor.slice(4, -1).split(",")[0].trim());
+      g = parseInt(currentColor.slice(4, -1).split(",")[1].trim());
+      b = parseInt(currentColor.slice(4, -1).split(",")[2].trim());
+
+      r = Math.max(r - shadingFactor * 255, 0);
+      g = Math.max(g - shadingFactor * 255, 0);
+      b = Math.max(b - shadingFactor * 255, 0);
+
+      cell.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
   }
 }
     - this function is called when the mouse is moved over or clicked on a grid cell, it handles the colour change logic based on the fact of which curret feature 
       is at hand represented by curBtn, if the mode is colour, it sets the background colour of the grid cell to the current colour, curCol, of the mode is rainbow,
       then it generates a random RGB colour value which is then applied to the background of the grid cell, if the mode is in eraser then it sets the background colour
-      of the grid to the accent colour of #fff8dc 
+      of the grid to the accent colour of #fff8dc, if the mode is shade, then on the grid the colour will get progressivly darker
 
 function activatedBtnListener(newBtn) {
   switch (curBtn) {

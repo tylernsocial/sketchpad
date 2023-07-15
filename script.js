@@ -3,7 +3,7 @@ const picked = document.getElementById("pickCol");
 const cBtn = document.getElementById("colour");
 const rBtn = document.getElementById("rainbow");
 const eBtn = document.getElementById("erase");
-const sBtn = document.getElementById("shading")
+const sBtn = document.getElementById("shading");
 const clBtn = document.getElementById("clear");
 
 const slider = document.getElementById("slider");
@@ -32,9 +32,9 @@ rBtn.onclick = function () {
 eBtn.onclick = function () {
   setCurBtn("eraser");
 };
-sBtn.onclick = function (){
+sBtn.onclick = function () {
   setCurBtn("shading");
-}
+};
 clBtn.onclick = function () {
   updateSetup();
 };
@@ -92,11 +92,6 @@ function colChange(e) {
     }
   }
 }
-
-
-
-
-
 
 function activatedBtnListener(newBtn) {
   switch (curBtn) {
@@ -161,4 +156,3 @@ window.onload = function () {
   setup(16);
   activatedBtnListener("colour");
 };
-
